@@ -1,11 +1,12 @@
 import React, { Component } from "react"; //imrc
-
+import { getMovies } from "../services/fakeMovieService";
 class ProcessR extends Component {
   //cc
 
   state = {
-    //defauilt value of the date time
-    date: "0/0/00 0:00:00"
+    //default value of the date time
+    date: "0/0/00 0:00:00",
+    movies: getMovies()
   };
   componentDidMount() {
     var that = this;
@@ -53,6 +54,18 @@ class ProcessR extends Component {
       marginBottom: "0px",
       display: "inline - block"
     };
+
+    if (this.state.movies.length === 0)
+      return (
+        <div>
+          <p style={mystyle}>There were no movies processed</p>
+          <button style={bstyle}>Export</button>
+          <button style={bstyle}> Report Logger</button>
+          <h4 style={{ fontSize: 20, marginTop: 16, color: "red" }}>
+            Compiled: {this.state.date}
+          </h4>
+        </div>
+      );
     return (
       <div>
         <h1 style={mystyle}>Process Report</h1>
@@ -68,34 +81,20 @@ class ProcessR extends Component {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th>1</th>
-                <td>movie</td>
-                <td>tt4154756</td>
-                <td class="bg-success">
-                  Avengers: Infinity War (Plus Bonus Content)
-                </td>
-              </tr>
-              <tr>
-                <th>2</th>
-                <td>movie</td>
-                <td>tt4154796</td>
-                <td class="bg-danger">
-                  Marvel Studios' Avengers: Endgame (With Bonus)
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>movie</td>
-                <td>tt2283362</td>
-                <td>Jumanji: Welcome To The Jungle</td>
-              </tr>
+              {this.state.movies.map(movie => (
+                <tr key={movie.id}>
+                  <td></td>
+                  <td>{movie.type}</td>
+                  <td>{movie._id}</td>
+                  <td>{movie.title}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </table>
         <h5>Positive Process Count: 1</h5>
         <h5>Negative Process Count: 1</h5>
-        <h5>Total: 3</h5>
+        <h5>Total: {this.state.movies.length}</h5>
         <button style={bstyle}>Export</button>
         <button style={bstyle}> Report Logger</button>
         <h4 style={{ fontSize: 20, marginTop: 16, color: "red" }}>
