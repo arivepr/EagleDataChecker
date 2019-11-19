@@ -1,9 +1,12 @@
 import React, { Component } from "react"; //imrc
+import { getMovies } from "../services/fakeMovieService";
 
 class MovieL extends Component {
   //cc
 
-  state = {};
+  state = {
+    movies: getMovies()
+  };
   render() {
     const mystyle = {
       color: "white",
@@ -28,8 +31,17 @@ class MovieL extends Component {
       marginBottom: "0px",
       display: "inline - block"
     };
+
+    if (this.state.movies.length === 0)
+      return (
+        <div>
+          <p style={mystyle}>There are no movies in the database</p>
+          <button>Import File</button>
+        </div>
+      );
+
     return (
-      <div>
+      <React.Fragment>
         <h1 style={mystyle}>Movie List</h1>
         <table class="table table-bordered">
           <table class="table table-hover">
@@ -42,29 +54,19 @@ class MovieL extends Component {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th>1</th>
-                <td>movie</td>
-                <td>tt4154756</td>
-                <td>Avengers: Infinity War (Plus Bonus Content)</td>
-              </tr>
-              <tr>
-                <th>2</th>
-                <td>movie</td>
-                <td>tt4154796</td>
-                <td>Marvel Studios' Avengers: Endgame (With Bonus)</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>movie</td>
-                <td>tt2283362</td>
-                <td>Jumanji: Welcome To The Jungle</td>
-              </tr>
+              {this.state.movies.map(movie => (
+                <tr key={movie.id}>
+                  <td></td>
+                  <td>{movie.type}</td>
+                  <td>{movie._id}</td>
+                  <td>{movie.title}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </table>
         <button style={bstyle}>Import File</button>
-      </div>
+      </React.Fragment>
     );
   }
 }
